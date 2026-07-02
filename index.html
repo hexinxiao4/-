@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子物证理论考试刷题库</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --warning: #ca8a04;
+            --warning-light: #fef9c3;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .stats-bar span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .sidebar {
+                display: none;
+            }
+            .mobile-nav {
+                display: flex !important;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        .sidebar h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.4rem;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .nav-btn .badge {
+            margin-left: auto;
+            font-size: 0.75rem;
+            background: var(--border);
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* Mobile Nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 0.5rem;
+            z-index: 100;
+            justify-content: space-around;
+        }
+        .mobile-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .mobile-nav-btn.active { color: var(--primary); }
+        .mobile-nav-btn .icon { font-size: 1.3rem; }
+
+        /* Content Area */
+        .content {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            min-height: 500px;
+        }
+
+        /* Home View */
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+        .mode-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .mode-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.15);
+        }
+        .mode-card.exam { background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%); border-color: #fde047; }
+        .mode-card.wrong { background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-color: #fca5a5; }
+        .mode-card.fav { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-color: #86efac; }
+        .mode-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .mode-card p { font-size: 0.85rem; color: var(--text-secondary); }
+        .mode-card .big-icon { position: absolute; right: 1rem; bottom: 0.5rem; font-size: 3rem; opacity: 0.15; }
+
+        .progress-overview {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+        .progress-bars {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .progress-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .progress-label { width: 80px; font-size: 0.85rem; color: var(--text-secondary); }
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+        .progress-fill.single { background: var(--primary); }
+        .progress-fill.multiple { background: var(--success); }
+        .progress-fill.judge { background: var(--warning); }
+        .progress-value { width: 50px; text-align: right; font-size: 0.85rem; font-weight: 600; }
+
+        /* Quiz View */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .quiz-title { font-size: 1.1rem; color: var(--text-secondary); }
+        .quiz-counter {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .question-card {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .question-type-tag {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .question-type-tag.single { background: var(--primary-light); color: var(--primary); }
+        .question-type-tag.multiple { background: var(--success-light); color: var(--success); }
+        .question-type-tag.judge { background: var(--warning-light); color: var(--warning); }
+        .question-text { font-size: 1.15rem; font-weight: 500; line-height: 1.7; margin-bottom: 1.25rem; }
+        .options-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        .option:hover { border-color: var(--primary); background: var(--primary-light); }
+        .option.selected { border-color: var(--primary); background: var(--primary-light); }
+        .option.correct { border-color: var(--success); background: var(--success-light); }
+        .option.wrong { border-color: var(--danger); background: var(--danger-light); }
+        .option.disabled { cursor: default; pointer-events: none; }
+        .option-key {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 600;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .option.selected .option-key { background: var(--primary); color: white; }
+        .option.correct .option-key { background: var(--success); color: white; }
+        .option.wrong .option-key { background: var(--danger); color: white; }
+        .option-text { font-size: 0.95rem; padding-top: 0.15rem; }
+
+        /* Explanation */
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            animation: fadeIn 0.3s ease;
+        }
+        .explanation-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .explanation-text { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+        .correct-answer { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #15803d; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: var(--bg); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex; align-items: center; gap: 0.3rem;
+            transition: all 0.2s;
+        }
+        .action-btn:hover { background: var(--bg); }
+        .action-btn.active { background: var(--danger-light); color: var(--danger); border-color: var(--danger); }
+        .action-btn.fav-active { background: #fce7f3; color: #be185d; border-color: #f9a8d4; }
+
+        /* Exam Result */
+        .result-card {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        .score-circle {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        .score-circle.pass { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 3px solid var(--success); }
+        .score-circle.fail { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 3px solid var(--danger); }
+        .score-number { font-size: 3rem; font-weight: 700; }
+        .score-circle.pass .score-number { color: var(--success); }
+        .score-circle.fail .score-number { color: var(--danger); }
+        .score-label { font-size: 0.9rem; color: var(--text-secondary); }
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+        }
+        .result-item {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        .result-item .num { font-size: 1.5rem; font-weight: 700; }
+        .result-item .label { font-size: 0.8rem; color: var(--text-secondary); }
+
+        /* Wrong Book */
+        .wrong-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .wrong-item {
+            background: var(--bg);
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wrong-item:hover { background: #f1f5f9; }
+        .wrong-item .q-text { font-size: 0.95rem; font-weight: 500; }
+        .wrong-item .q-meta { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .wrong-item .q-type { font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 4px; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 200;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.3s ease; }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+        .empty-state .icon { font-size: 4rem; margin-bottom: 1rem; }
+        .empty-state h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text); }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .filter-tab:hover, .filter-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>📚 电子物证理论考试刷题库</h1>
+            <div class="stats-bar">
+                <span>📋 总题数：<strong id="totalCount">0</strong></span>
+                <span>✅ 已答：<strong id="answeredCount">0</strong></span>
+                <span>❌ 错题：<strong id="wrongCount">0</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <h3>📂 学习模式</h3>
+            <button class="nav-btn active" data-view="home" onclick="switchView('home')">
+                <span>🏠</span> 首页概览
+            </button>
+            <button class="nav-btn" data-view="single" onclick="startPractice('single')">
+                <span>🔘</span> 单选题 <span class="badge" id="singleBadge">0</span>
+            </button>
+            <button class="nav-btn" data-view="multiple" onclick="startPractice('multiple')">
+                <span>☑️</span> 多选题 <span class="badge" id="multipleBadge">0</span>
+            </button>
+            <button class="nav-btn" data-view="judge" onclick="startPractice('judge')">
+                <span>⚖️</span> 判断题 <span class="badge" id="judgeBadge">0</span>
+            </button>
+            <button class="nav-btn" data-view="random" onclick="startPractice('random')">
+                <span>🔀</span> 随机练习
+            </button>
+            <button class="nav-btn" data-view="exam" onclick="startExam()">
+                <span>📝</span> 模拟考试
+            </button>
+            <button class="nav-btn" data-view="wrong" onclick="showWrongBook()">
+                <span>📕</span> 错题本 <span class="badge" id="wrongBadge">0</span>
+            </button>
+            <button class="nav-btn" data-view="fav" onclick="showFavorites()">
+                <span>⭐</span> 收藏夹 <span class="badge" id="favBadge">0</span>
+            </button>
+        </aside>
+
+        <main class="content" id="mainContent">
+            <!-- Content will be rendered by JS -->
+        </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <button class="mobile-nav-btn active" onclick="switchView('home')">
+            <span class="icon">🏠</span>首页
+        </button>
+        <button class="mobile-nav-btn" onclick="startPractice('single')">
+            <span class="icon">🔘</span>单选
+        </button>
+        <button class="mobile-nav-btn" onclick="startPractice('random')">
+            <span class="icon">🔀</span>随机
+        </button>
+        <button class="mobile-nav-btn" onclick="startExam()">
+            <span class="icon">📝</span>考试
+        </button>
+        <button class="mobile-nav-btn" onclick="showWrongBook()">
+            <span class="icon">📕</span>错题
+        </button>
+    </nav>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="questions.js"></script>
+    <script>
+        // ========== App State ==========
+        const app = {
+            currentView: 'home',
+            currentMode: null,
+            currentQuestions: [],
+            currentIndex: 0,
+            selectedOptions: [],
+            showAnswer: false,
+            answers: {},       // { qid: { selected, correct, time } }
+            wrongQuestions: new Set(),
+            favorites: new Set(),
+            examMode: false,
+            examTime: 0,
+            examTimer: null,
+            examAnswers: {},
+        };
+
+        function getQuestionType(q) {
+            if (q.type) return q.type;
+            if (q.id <= 50 || (q.id >= 91 && q.id <= 150) || (q.id >= 201 && q.id <= 320)) return 'single';
+            if ((q.id >= 51 && q.id <= 70) || (q.id >= 151 && q.id <= 170) || (q.id >= 321 && q.id <= 370)) return 'multiple';
+            return 'judge';
+        }
+
+        // ========== Init ==========
+        function init() {
+            loadStorage();
+            updateStats();
+            renderHome();
+        }
+
+        function loadStorage() {
+            try {
+                const saved = localStorage.getItem('digitalForensicsQuiz');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    app.answers = data.answers || {};
+                    app.wrongQuestions = new Set(data.wrongQuestions || []);
+                    app.favorites = new Set(data.favorites || []);
+                }
+            } catch (e) { console.error('Storage load failed', e); }
+        }
+
+        function saveStorage() {
+            try {
+                localStorage.setItem('digitalForensicsQuiz', JSON.stringify({
+                    answers: app.answers,
+                    wrongQuestions: Array.from(app.wrongQuestions),
+                    favorites: Array.from(app.favorites),
+                }));
+            } catch (e) { console.error('Storage save failed', e); }
+        }
+
+        function updateStats() {
+            const total = questionBank.single.length + questionBank.multiple.length + questionBank.judge.length;
+            const answered = Object.keys(app.answers).length;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('answeredCount').textContent = answered;
+            document.getElementById('wrongCount').textContent = app.wrongQuestions.size;
+            document.getElementById('singleBadge').textContent = questionBank.single.length;
+            document.getElementById('multipleBadge').textContent = questionBank.multiple.length;
+            document.getElementById('judgeBadge').textContent = questionBank.judge.length;
+            document.getElementById('wrongBadge').textContent = app.wrongQuestions.size;
+            document.getElementById('favBadge').textContent = app.favorites.size;
+        }
+
+        // ========== Navigation ==========
+        function switchView(view) {
+            app.currentView = view;
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.nav-btn[data-view="${view}"]`)?.classList.add('active');
+
+            if (view === 'home') renderHome();
+            else if (view === 'wrong') showWrongBook();
+            else if (view === 'fav') showFavorites();
+        }
+
+        // ========== Home View ==========
+        function renderHome() {
+            const total = questionBank.single.length + questionBank.multiple.length + questionBank.judge.length;
+            const singleDone = questionBank.single.filter(q => app.answers[q.id]).length;
+            const multipleDone = questionBank.multiple.filter(q => app.answers[q.id]).length;
+            const judgeDone = questionBank.judge.filter(q => app.answers[q.id]).length;
+
+            document.getElementById('mainContent').innerHTML = `
+                <div class="fade-in">
+                    <h2 style="margin-bottom:1.5rem; font-size:1.3rem;">👋 欢迎开始电子物证理论学习</h2>
+                    <div class="home-grid">
+                        <div class="mode-card" onclick="startPractice('single')">
+                            <h3>🔘 单选题</h3>
+                            <p>${questionBank.single.length} 道题，夯实基础知识</p>
+                            <span class="big-icon">🔘</span>
+                        </div>
+                        <div class="mode-card" onclick="startPractice('multiple')">
+                            <h3>☑️ 多选题</h3>
+                            <p>${questionBank.multiple.length} 道题，综合理解运用</p>
+                            <span class="big-icon">☑️</span>
+                        </div>
+                        <div class="mode-card" onclick="startPractice('judge')">
+                            <h3>⚖️ 判断题</h3>
+                            <p>${questionBank.judge.length} 道题，辨析概念对错</p>
+                            <span class="big-icon">⚖️</span>
+                        </div>
+                        <div class="mode-card exam" onclick="startPractice('random')">
+                            <h3>🔀 随机练习</h3>
+                            <p>打乱顺序，检验真实掌握程度</p>
+                            <span class="big-icon">🔀</span>
+                        </div>
+                        <div class="mode-card exam" onclick="startExam()">
+                            <h3>📝 模拟考试</h3>
+                            <p>全真模拟，计时答题</p>
+                            <span class="big-icon">📝</span>
+                        </div>
+                        <div class="mode-card wrong" onclick="showWrongBook()">
+                            <h3>📕 错题本</h3>
+                            <p>已收录 ${app.wrongQuestions.size} 道错题，重点复习</p>
+                            <span class="big-icon">📕</span>
+                        </div>
+                    </div>
+                    <div class="progress-overview">
+                        <h3 style="font-size:1rem; margin-bottom:0.5rem;">📊 学习进度</h3>
+                        <div class="progress-bars">
+                            <div class="progress-item">
+                                <span class="progress-label">单选题</span>
+                                <div class="progress-bar"><div class="progress-fill single" style="width:${singleDone/questionBank.single.length*100}%"></div></div>
+                                <span class="progress-value">${singleDone}/${questionBank.single.length}</span>
+                            </div>
+                            <div class="progress-item">
+                                <span class="progress-label">多选题</span>
+                                <div class="progress-bar"><div class="progress-fill multiple" style="width:${multipleDone/questionBank.multiple.length*100}%"></div></div>
+                                <span class="progress-value">${multipleDone}/${questionBank.multiple.length}</span>
+                            </div>
+                            <div class="progress-item">
+                                <span class="progress-label">判断题</span>
+                                <div class="progress-bar"><div class="progress-fill judge" style="width:${judgeDone/questionBank.judge.length*100}%"></div></div>
+                                <span class="progress-value">${judgeDone}/${questionBank.judge.length}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========== Practice Mode ==========
+        function startPractice(mode) {
+            app.currentMode = mode;
+            app.examMode = false;
+            app.currentIndex = 0;
+            app.selectedOptions = [];
+            app.showAnswer = false;
+
+            if (mode === 'random') {
+                const all = [...questionBank.single, ...questionBank.multiple, ...questionBank.judge];
+                app.currentQuestions = shuffle([...all]);
+            } else if (mode === 'single') {
+                app.currentQuestions = [...questionBank.single];
+            } else if (mode === 'multiple') {
+                app.currentQuestions = [...questionBank.multiple];
+            } else if (mode === 'judge') {
+                app.currentQuestions = [...questionBank.judge];
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.nav-btn[data-view="${mode}"]`)?.classList.add('active');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = app.currentQuestions[app.currentIndex];
+            const total = app.currentQuestions.length;
+            const saved = app.answers[q.id];
+            const isFav = app.favorites.has(q.id);
+
+            // Load saved state if any (but not in exam mode)
+            if (saved && !app.showAnswer && !app.examMode) {
+                app.selectedOptions = Array.isArray(saved.selected) ? [...saved.selected] : [saved.selected];
+                app.showAnswer = true;
+            } else if (!saved || app.examMode) {
+                app.selectedOptions = [];
+                app.showAnswer = false;
+            }
+
+            const typeLabels = { single: '单选题', multiple: '多选题', judge: '判断题' };
+            const typeClass = getQuestionType(q);
+
+            let optionsHtml = '';
+            if (getQuestionType(q) === 'judge' || (q.options && q.options.length === 2 && (q.options[0].includes('正确') || q.options[0].includes('错误')))) {
+                // Judge style
+                optionsHtml = q.options.map((opt, i) => {
+                    const key = String.fromCharCode(65 + i);
+                    const isSelected = app.selectedOptions.includes(key);
+                    const isCorrect = q.answer === key;
+                    const isWrong = app.showAnswer && isSelected && !isCorrect;
+                    let cls = 'option';
+                    if (app.showAnswer) {
+                        if (isCorrect) cls += ' correct';
+                        if (isWrong) cls += ' wrong';
+                    } else if (isSelected) {
+                        cls += ' selected';
+                    }
+                    const disabled = app.showAnswer ? 'disabled' : '';
+                    return `
+                        <div class="${cls} ${disabled}" onclick="selectOption('${key}')">
+                            <div class="option-key">${key}</div>
+                            <div class="option-text">${opt.replace(/^[A-D]\.\s*/, '')}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else if (getQuestionType(q) === 'multiple' || (Array.isArray(q.answer) && q.answer.length > 1)) {
+                // Multiple style
+                optionsHtml = q.options.map((opt, i) => {
+                    const key = String.fromCharCode(65 + i);
+                    const isSelected = app.selectedOptions.includes(key);
+                    const isCorrect = q.answer.includes(key);
+                    const isWrong = app.showAnswer && isSelected && !isCorrect;
+                    let cls = 'option';
+                    if (app.showAnswer) {
+                        if (isCorrect) cls += ' correct';
+                        if (isWrong) cls += ' wrong';
+                    } else if (isSelected) {
+                        cls += ' selected';
+                    }
+                    const disabled = app.showAnswer ? 'disabled' : '';
+                    return `
+                        <div class="${cls} ${disabled}" onclick="selectMultiple('${key}')">
+                            <div class="option-key">${isSelected ? '☑' : '☐'}</div>
+                            <div class="option-text">${opt.replace(/^[A-D]\.\s*/, '')}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                // Single style
+                optionsHtml = q.options.map((opt, i) => {
+                    const key = String.fromCharCode(65 + i);
+                    const isSelected = app.selectedOptions.includes(key);
+                    const isCorrect = q.answer === key;
+                    const isWrong = app.showAnswer && isSelected && !isCorrect;
+                    let cls = 'option';
+                    if (app.showAnswer) {
+                        if (isCorrect) cls += ' correct';
+                        if (isWrong) cls += ' wrong';
+                    } else if (isSelected) {
+                        cls += ' selected';
+                    }
+                    const disabled = app.showAnswer ? 'disabled' : '';
+                    return `
+                        <div class="${cls} ${disabled}" onclick="selectOption('${key}')">
+                            <div class="option-key">${key}</div>
+                            <div class="option-text">${opt.replace(/^[A-D]\.\s*/, '')}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            let explanationHtml = '';
+            if (app.showAnswer) {
+                let ansText = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
+            // For judge questions, show "正确"/"错误" instead of "A"/"B"
+            if (typeClass === 'judge' && q.options.length === 2) {
+                const ansIdx = q.answer === 'A' ? 0 : q.answer === 'B' ? 1 : -1;
+                if (ansIdx >= 0) ansText = q.options[ansIdx].replace(/^[A-B]\.\s*/, '');
+            }
+                explanationHtml = `
+                    <div class="explanation">
+                        <div class="explanation-title">📖 答案解析</div>
+                        <div class="correct-answer">正确答案：${ansText}</div>
+                        <div class="explanation-text">${q.explanation}</div>
+                    </div>
+                `;
+            }
+
+            const modeNames = { single: '单选题练习', multiple: '多选题练习', judge: '判断题练习', random: '随机练习' };
+
+            document.getElementById('mainContent').innerHTML = `
+                <div class="fade-in">
+                    <div class="quiz-header">
+                        <div class="quiz-title">${app.examMode ? '📝 模拟考试 <span id="examTimer" style="margin-left:10px; color:var(--danger); font-weight:600;">⏱️ 60:00</span>' : modeNames[app.currentMode] || '练习'}</div>
+                        <div class="quiz-counter">${app.currentIndex + 1} / ${total}</div>
+                    </div>
+                    <div class="question-card">
+                        <div class="question-type-tag ${typeClass}">${typeLabels[typeClass]}</div>
+                        <div class="question-text">${q.question}</div>
+                        <div class="options-list">${optionsHtml}</div>
+                        ${explanationHtml}
+                    </div>
+                    <div class="controls">
+                        <div class="action-btns">
+                            <button class="action-btn ${isFav ? 'fav-active' : ''}" onclick="toggleFavorite(${q.id})">
+                                ${isFav ? '⭐ 已收藏' : '☆ 收藏'}
+                            </button>
+                        </div>
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn btn-outline" ${app.currentIndex === 0 ? 'disabled' : ''} onclick="prevQuestion()">⬅ 上一题</button>
+                            ${!app.showAnswer ?
+                                `<button class="btn btn-primary" onclick="submitAnswer()">✓ 提交答案</button>` :
+                                `<button class="btn btn-success" onclick="nextQuestion()">下一题 ➡</button>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectOption(key) {
+            if (app.showAnswer) return;
+            app.selectedOptions = [key];
+            renderQuestion();
+        }
+
+        function selectMultiple(key) {
+            if (app.showAnswer) return;
+            const idx = app.selectedOptions.indexOf(key);
+            if (idx > -1) {
+                app.selectedOptions.splice(idx, 1);
+            } else {
+                app.selectedOptions.push(key);
+            }
+            app.selectedOptions.sort();
+            renderQuestion();
+        }
+
+        function submitAnswer() {
+            if (app.selectedOptions.length === 0) {
+                showToast('请先选择答案');
+                return;
+            }
+            const q = app.currentQuestions[app.currentIndex];
+            let isCorrect = false;
+
+            if (Array.isArray(q.answer)) {
+                isCorrect = app.selectedOptions.length === q.answer.length &&
+                    app.selectedOptions.every(v => q.answer.includes(v));
+            } else {
+                isCorrect = app.selectedOptions[0] === q.answer;
+            }
+
+            app.showAnswer = true;
+            app.answers[q.id] = {
+                selected: [...app.selectedOptions],
+                correct: isCorrect,
+                time: Date.now()
+            };
+
+            if (!isCorrect) {
+                app.wrongQuestions.add(q.id);
+            } else {
+                app.wrongQuestions.delete(q.id);
+            }
+
+            saveStorage();
+            updateStats();
+            renderQuestion();
+
+            if (app.examMode) {
+                app.examAnswers[q.id] = isCorrect;
+            }
+        }
+
+        function nextQuestion() {
+            if (app.currentIndex < app.currentQuestions.length - 1) {
+                app.currentIndex++;
+                app.selectedOptions = [];
+                app.showAnswer = false;
+                renderQuestion();
+            } else if (app.examMode) {
+                finishExam();
+            } else {
+                showToast('已经是最后一题了！');
+            }
+        }
+
+        function prevQuestion() {
+            if (app.currentIndex > 0) {
+                app.currentIndex--;
+                app.selectedOptions = [];
+                app.showAnswer = false;
+                renderQuestion();
+            }
+        }
+
+        function toggleFavorite(qid) {
+            if (app.favorites.has(qid)) {
+                app.favorites.delete(qid);
+                showToast('已取消收藏');
+            } else {
+                app.favorites.add(qid);
+                showToast('已收藏');
+            }
+            saveStorage();
+            updateStats();
+            renderQuestion();
+        }
+
+        // ========== Exam Mode ==========
+        function startExam() {
+            app.examMode = true;
+            app.currentMode = 'exam';
+            const all = [...questionBank.single.slice(0, 20), ...questionBank.multiple.slice(0, 10), ...questionBank.judge.slice(0, 10)];
+            app.currentQuestions = shuffle([...all]);
+            app.currentIndex = 0;
+            app.selectedOptions = [];
+            app.showAnswer = false;
+            app.examAnswers = {};
+            app.examTime = 60 * 60; // 60 minutes
+            renderQuestion();
+            startExamTimer();
+        }
+
+        function startExamTimer() {
+            if (app.examTimer) clearInterval(app.examTimer);
+            app.examTimer = setInterval(() => {
+                app.examTime--;
+                const timerEl = document.getElementById('examTimer');
+                if (timerEl) {
+                    const m = Math.floor(app.examTime / 60).toString().padStart(2, '0');
+                    const s = (app.examTime % 60).toString().padStart(2, '0');
+                    timerEl.textContent = `⏱️ ${m}:${s}`;
+                    if (app.examTime < 300) timerEl.style.color = 'var(--danger)';
+                }
+                if (app.examTime <= 0) {
+                    clearInterval(app.examTimer);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        function finishExam() {
+            if (app.examTimer) clearInterval(app.examTimer);
+            const total = app.currentQuestions.length;
+            const correct = Object.values(app.examAnswers).filter(v => v).length;
+            const score = Math.round((correct / total) * 100);
+            const pass = score >= 60;
+
+            const singleCorrect = app.currentQuestions.filter((q, i) => {
+                if (getQuestionType(q) !== 'single') return false;
+                return app.examAnswers[q.id] === true;
+            }).length;
+
+            document.getElementById('mainContent').innerHTML = `
+                <div class="fade-in result-card">
+                    <div class="score-circle ${pass ? 'pass' : 'fail'}">
+                        <div class="score-number">${score}</div>
+                        <div class="score-label">分</div>
+                    </div>
+                    <h2 style="margin-bottom:1rem; color: ${pass ? 'var(--success)' : 'var(--danger)'};">
+                        ${pass ? '🎉 恭喜通过！' : '💪 继续加油！'}
+                    </h2>
+                    <div class="result-details">
+                        <div class="result-item">
+                            <div class="num" style="color:var(--primary)">${total}</div>
+                            <div class="label">总题数</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="num" style="color:var(--success)">${correct}</div>
+                            <div class="label">答对</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="num" style="color:var(--danger)">${total - correct}</div>
+                            <div class="label">答错</div>
+                        </div>
+                    </div>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem;">
+                        正确率 ${score}% · ${pass ? '已通过' : '未通过（及格线60分）'}
+                    </p>
+                    <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
+                        <button class="btn btn-primary" onclick="startExam()">🔄 再考一次</button>
+                        <button class="btn btn-outline" onclick="showWrongBook()">📕 查看错题</button>
+                        <button class="btn btn-outline" onclick="switchView('home')">🏠 返回首页</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========== Wrong Book ==========
+        function showWrongBook() {
+            app.currentView = 'wrong';
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.nav-btn[data-view="wrong"]')?.classList.add('active');
+
+            const wrongQs = [];
+            [...questionBank.single, ...questionBank.multiple, ...questionBank.judge].forEach(q => {
+                if (app.wrongQuestions.has(q.id)) wrongQs.push(q);
+            });
+
+            if (wrongQs.length === 0) {
+                document.getElementById('mainContent').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🎉</div>
+                        <h3>暂无错题</h3>
+                        <p>太棒了！你还没有做错过题目，继续保持~</p>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('mainContent').innerHTML = `
+                <div class="fade-in">
+                    <h2 style="margin-bottom:1rem;">📕 错题本（共 ${wrongQs.length} 题）</h2>
+                    <div class="wrong-list">
+                        ${wrongQs.map(q => {
+                            const type = getQuestionType(q);
+                            const typeLabels = { single: '单选', multiple: '多选', judge: '判断' };
+                            const typeColors = { single: 'var(--primary-light)', multiple: 'var(--success-light)', judge: 'var(--warning-light)' };
+                            const typeTextColors = { single: 'var(--primary)', multiple: 'var(--success)', judge: 'var(--warning)' };
+                            return `
+                                <div class="wrong-item" onclick="reviewQuestion(${q.id})">
+                                    <div>
+                                        <div class="q-text">${q.question}</div>
+                                        <div class="q-meta">
+                                            <span class="q-type" style="background:${typeColors[type]}; color:${typeTextColors[type]};">${typeLabels[type]}</span>
+                                            <span>ID: #${q.id}</span>
+                                        </div>
+                                    </div>
+                                    <span style="font-size:1.2rem;">➡</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div style="margin-top:1.5rem; text-align:center;">
+                        <button class="btn btn-danger" onclick="clearWrongBook()">🗑️ 清空错题本</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function reviewQuestion(qid) {
+            const all = [...questionBank.single, ...questionBank.multiple, ...questionBank.judge];
+            const q = all.find(item => item.id === qid);
+            if (!q) return;
+
+            app.currentQuestions = [q];
+            app.currentIndex = 0;
+            app.selectedOptions = [];
+            app.showAnswer = false;
+            app.currentMode = 'wrong';
+            renderQuestion();
+        }
+
+        function clearWrongBook() {
+            if (!confirm('确定要清空所有错题记录吗？')) return;
+            app.wrongQuestions.clear();
+            saveStorage();
+            updateStats();
+            showWrongBook();
+            showToast('错题本已清空');
+        }
+
+        // ========== Favorites ==========
+        function showFavorites() {
+            app.currentView = 'fav';
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.nav-btn[data-view="fav"]')?.classList.add('active');
+
+            const favQs = [];
+            [...questionBank.single, ...questionBank.multiple, ...questionBank.judge].forEach(q => {
+                if (app.favorites.has(q.id)) favQs.push(q);
+            });
+
+            if (favQs.length === 0) {
+                document.getElementById('mainContent').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">⭐</div>
+                        <h3>暂无收藏</h3>
+                        <p>答题时点击"收藏"按钮，可以将重点题目加入收藏夹哦~</p>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('mainContent').innerHTML = `
+                <div class="fade-in">
+                    <h2 style="margin-bottom:1rem;">⭐ 收藏夹（共 ${favQs.length} 题）</h2>
+                    <div class="wrong-list">
+                        ${favQs.map(q => {
+                            const type = getQuestionType(q);
+                            const typeLabels = { single: '单选', multiple: '多选', judge: '判断' };
+                            const typeColors = { single: 'var(--primary-light)', multiple: 'var(--success-light)', judge: 'var(--warning-light)' };
+                            const typeTextColors = { single: 'var(--primary)', multiple: 'var(--success)', judge: 'var(--warning)' };
+                            return `
+                                <div class="wrong-item" onclick="reviewQuestion(${q.id})">
+                                    <div>
+                                        <div class="q-text">${q.question}</div>
+                                        <div class="q-meta">
+                                            <span class="q-type" style="background:${typeColors[type]}; color:${typeTextColors[type]};">${typeLabels[type]}</span>
+                                            <span>ID: #${q.id}</span>
+                                        </div>
+                                    </div>
+                                    <span style="font-size:1.2rem;">➡</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========== Utilities ==========
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 2000);
+        }
+
+        // ========== Start ==========
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
