@@ -718,7 +718,7 @@
             if (saved && !app.showAnswer && !app.examMode) {
                 app.selectedOptions = Array.isArray(saved.selected) ? [...saved.selected] : [saved.selected];
                 app.showAnswer = true;
-            } else if (!saved || app.examMode) {
+            } else if (app.examMode) {
                 app.selectedOptions = [];
                 app.showAnswer = false;
             }
